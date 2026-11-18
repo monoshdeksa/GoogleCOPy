@@ -1,0 +1,6 @@
+{
+  "name": "SalinOrder",
+  "description": "Aplikasi sederhana untuk memindai tangkap layar driver ShopeeFood dan menyalin No Pesanan Penerima secara instan.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
