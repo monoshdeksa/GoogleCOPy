@@ -152,60 +152,17 @@ git push origin main
 
 ---
 
-### Cara 3 (Otomatis): Build & Upload APK Debug via GitHub Actions
+### Cara 3 (Otomatis): Build & Publish APK Debug via GitHub Actions
 
-Jika ingin GitHub otomatis membangun dan menyediakan `app-debug.apk` setiap kali Anda melakukan `git push` ke `main`, buat file `.github/workflows/build-debug-apk.yml` dengan isi berikut:
+Repository ini sudah dilengkapi workflow [`.github/workflows/build-debug-apk.yml`](.github/workflows/build-debug-apk.yml) yang otomatis berjalan setiap kali ada `git push` ke branch `main` atau dijalankan manual lewat tab **Actions → Build & Publish Debug APK → Run workflow**.
 
-```yaml
-name: Build Debug APK
-
-on:
-  push:
-    branches: [ main ]
-  workflow_dispatch:
-
-jobs:
-  build:
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: Set up JDK 21
-        uses: actions/setup-java@v4
-        with:
-          distribution: temurin
-          java-version: 21
-
-      - name: Generate debug.keystore
-        run: |
-          keytool -genkey -v \
-            -keystore debug.keystore \
-            -storepass android \
-            -alias androiddebugkey \
-            -keypass android \
-            -keyalg RSA \
-            -keysize 2048 \
-            -validity 10000 \
-            -dname "CN=Android Debug,O=Android,C=US"
-
-      - name: Setup Gradle 9.3.1
-        uses: gradle/actions/setup-gradle@v4
-        with:
-          gradle-version: 9.3.1
-
-      - name: Build Debug APK
-        run: gradle assembleDebug
-
-      - name: Upload Debug APK Artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: SalinOrder-debug-apk
-          path: app/build/outputs/apk/debug/app-debug.apk
-```
-
-Setelah workflow berjalan, unduh APK melalui tab **Actions → Build Debug APK → Artifacts**.
+Workflow ini otomatis:
+1. Menyiapkan **JDK 21** dan **Gradle 9.3.1**.
+2. Membuat `debug.keystore` sementara di runner CI.
+3. Menjalankan `gradle assembleDebug`.
+4. Mengunggah `SalinOrder-debug.apk` ke dua tempat sekaligus:
+   - **Tab Actions → Build & Publish Debug APK → Artifacts** (`SalinOrder-debug-apk`).
+   - **Tab Releases → `debug-latest`** (tautan unduh langsung file `.apk` untuk dipasang di HP Android).
 
 ---
 
