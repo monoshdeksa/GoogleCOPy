@@ -66,10 +66,21 @@ fun SalinOrderApp(
         }
     )
 
+    val fallbackImagePickerLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.GetContent(),
+        onResult = { uri ->
+            uri?.let { viewModel.processScreenshotUri(it) }
+        }
+    )
+
     val launchPicker = {
-        photoPickerLauncher.launch(
-            PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)
-        )
+        try {
+            photoPickerLauncher.launch(
+                PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)
+            )
+        } catch (_: Exception) {
+            fallbackImagePickerLauncher.launch("image/*")
+        }
     }
 
     LaunchedEffect(sharedImageUri) {

@@ -31,6 +31,8 @@
     <string name="history_empty_subtitle">Nomor pesanan yang Anda salin akan tersimpan di sini agar mudah disalin ulang.</string>
     <string name="error_no_text">Tidak ada teks yang terbaca pada gambar ini. Coba pilih tangkap layar yang lebih jelas.</string>
     <string name="error_load_image">Gagal membuka gambar. Silakan pilih tangkap layar lain.</string>
+    <string name="error_load_image_detail">Gagal membuka gambar (%1$s). Silakan pilih tangkap layar lain.</string>
+    <string name="error_ocr_failed_detail">Gagal membaca teks dari gambar (%1$s). Coba lagi atau pilih gambar lain.</string>
     <string name="cd_hero_illustration">Ilustrasi pemindaian nomor pesanan dari tangkap layar</string>
     <string name="cd_screenshot_preview">Pratinjau tangkap layar pesanan</string>
     <string name="cd_copy_line">Salin teks ini</string>

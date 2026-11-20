@@ -6,13 +6,16 @@ import android.content.ClipboardManager
 import android.content.Context
 import android.graphics.Bitmap
 import android.net.Uri
+import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.R
 import com.example.data.OrderHistoryRepository
 import com.example.data.local.AppDatabase
 import com.example.data.local.CopiedOrderEntity
+import com.example.ocr.ImageLoadException
 import com.example.ocr.MatchConfidence
+import com.example.ocr.OcrProcessingException
 import com.example.ocr.OrderExtractionResult
 import com.example.ocr.ScreenshotOcrEngine
 import kotlinx.coroutines.Job
@@ -110,16 +113,47 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
                         )
                     }
                 }
-            } catch (e: Exception) {
+            } catch (e: ImageLoadException) {
+                Log.e("MainViewModel", "Failed to load image URI: $uri", e)
+                val app = getApplication<Application>()
+                val detail = e.message?.takeIf { it.isNotBlank() }
+                val message = if (detail != null) {
+                    app.getString(R.string.error_load_image_detail, detail)
+                } else {
+                    app.getString(R.string.error_load_image)
+                }
+                _uiState.update {
+                    it.copy(scanState = ScanUiState.Error(message))
+                }
+            } catch (e: OcrProcessingException) {
+                Log.e("MainViewModel", "OCR failed for URI: $uri", e)
+                val app = getApplication<Application>()
+                val detail = e.message?.takeIf { it.isNotBlank() } ?: e::class.java.simpleName
                 _uiState.update {
                     it.copy(
                         scanState = ScanUiState.Error(
-                            getApplication<Application>().getString(R.string.error_load_image)
+                            app.getString(R.string.error_ocr_failed_detail, detail)
+                        )
+                    )
+                }
+            } catch (e: Exception) {
+                Log.e("MainViewModel", "Unexpected error processing URI: $uri", e)
+                val app = getApplication<Application>()
+                val detail = e.localizedMessage?.takeIf { it.isNotBlank() } ?: e::class.java.simpleName
+                _uiState.update {
+                    it.copy(
+                        scanState = ScanUiState.Error(
+                            app.getString(R.string.error_load_image_detail, detail)
                         )
                     )
                 }
             }
         }
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        ocrEngine.close()
     }
 
     fun onOrderDraftChanged(value: String) {
