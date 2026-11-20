@@ -2,6 +2,14 @@
 
 Aplikasi Android berbasis **Jetpack Compose** dan **ML Kit Text Recognition** untuk memindai tangkap layar pesanan driver ShopeeFood serta menyalin **No. Pesanan Penerima** secara instan (baik lewat pemilih gambar maupun menu *Share* Android).
 
+## Unduh APK Debug Terbaru
+
+- **Download dari GitHub Release Terbaru (`debug-latest`):** [Unduh `SalinOrder-debug.apk`](https://github.com/monoshdeksa/GoogleCOPy/releases/download/debug-latest/SalinOrder-debug.apk)
+- **Halaman Release:** [Lihat Release `debug-latest`](https://github.com/monoshdeksa/GoogleCOPy/releases/tag/debug-latest)
+- **File APK langsung di Repository:** [`apk/SalinOrder-debug.apk`](apk/SalinOrder-debug.apk) ([Unduh langsung](https://github.com/monoshdeksa/GoogleCOPy/raw/main/apk/SalinOrder-debug.apk))
+
+> **Catatan Instalasi:** Jika sebelumnya sudah memasang versi debug lama dari build lain, **hapus (uninstall)** aplikasi `SalinOrder` terlebih dahulu sebelum memasang APK terbaru agar tidak terjadi konflik *signing key*.
+
 ## Informasi Proyek
 
 | Properti | Nilai |

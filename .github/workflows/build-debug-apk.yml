@@ -3,6 +3,9 @@ name: Build & Publish Debug APK
 on:
   push:
     branches: [ main ]
+    paths-ignore:
+      - 'README.md'
+      - 'apk/**'
   workflow_dispatch:
 
 permissions:
